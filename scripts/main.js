@@ -20,66 +20,7 @@
 /* eslint-env browser, es6 */
 'use strict';
 
-function base64UrlToUint8Array(base64UrlData) {
-    var padding = '='.repeat((4 - base64UrlData.length % 4) % 4);
-    var base64 = (base64UrlData + padding).replace(/\-/g, '+').replace(/_/g, '/');
-
-    var rawData = window.atob(base64);
-    var buffer = new Uint8Array(rawData.length);
-
-    for (var i = 0; i < rawData.length; ++i) {
-        buffer[i] = rawData.charCodeAt(i);
-    }
-    return buffer;
-}
-
-function uint8ArrayToBase64Url(uint8Array, start, end) {
-    start = start || 0;
-    end = end || uint8Array.byteLength;
-
-    var base64 = window.btoa(String.fromCharCode.apply(null, uint8Array.subarray(start, end)));
-    return base64.replace(/\=/g, '') // eslint-disable-line no-useless-escape
-        .replace(/\+/g, '-').replace(/\//g, '_');
-}
-
-function cryptoKeyToUrlBase64(publicKey, privateKey) {
-    var promises = [];
-    promises.push(crypto.subtle.exportKey('jwk', publicKey).then(function(jwk) {
-        var x = base64UrlToUint8Array(jwk.x);
-        var y = base64UrlToUint8Array(jwk.y);
-
-        var publicKey = new Uint8Array(65);
-        publicKey.set([0x04], 0);
-        publicKey.set(x, 1);
-        publicKey.set(y, 33);
-
-        return publicKey;
-    }));
-
-    promises.push(crypto.subtle.exportKey('jwk', privateKey).then(function(jwk) {
-        return base64UrlToUint8Array(jwk.d);
-    }));
-
-    return Promise.all(promises).then(function(exportedKeys) {
-        return {
-            'public': uint8ArrayToBase64Url(exportedKeys[0]),
-            'private': uint8ArrayToBase64Url(exportedKeys[1])
-        };
-    });
-}
-
-function generateNewKeys() {
-    return crypto.subtle.generateKey({ name: 'ECDH', namedCurve: 'P-256' }, true, ['deriveBits']).then(function(keys) {
-        return cryptoKeyToUrlBase64(keys.publicKey, keys.privateKey);
-    });
-}
-
-const applicationServerPublicKey = '';
-var promiseChain = Promise.resolve(generateNewKeys());
-promiseChain.then(function(keys) {
-    applicationServerPublicKey = keys.public;
-})
-console.log(applicationServerPublicKey, 'returnPublicKey()')
+const applicationServerPublicKey = 'BOPWDKnCV3SVetAHxbwtr4wkP75lL1wajVv5x-v3TpPsmUipCJO7gv0WGlJITamZ6yZEN4yCSy5ZdKZppGZdUo4';
 
 const pushButton = document.querySelector('.js-push-btn');
 
