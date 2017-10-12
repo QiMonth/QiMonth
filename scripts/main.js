@@ -74,16 +74,12 @@ function generateNewKeys() {
     });
 }
 
-function returnPublicKey() {
-    var promiseChain = Promise.resolve(generateNewKeys());
-    return promiseChain.then(function(keys) {
-        return keys.public;
-    })
-}
-
-console.log(returnPublicKey(), 'returnPublicKey()')
-
-const applicationServerPublicKey = 'BBlFAjKhyO_LVoaUB0ZxpA8ZSylfJa8AVCtFbZv-8XS-Zfnhbo1n3zH82DTYRgJLDGx8VKdBUOb-cu5JwD-MrZ4';
+const applicationServerPublicKey = '';
+var promiseChain = Promise.resolve(generateNewKeys());
+promiseChain.then(function(keys) {
+    applicationServerPublicKey = keys.public;
+})
+console.log(applicationServerPublicKey, 'returnPublicKey()')
 
 const pushButton = document.querySelector('.js-push-btn');
 
