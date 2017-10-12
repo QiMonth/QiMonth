@@ -75,7 +75,7 @@ function generateNewKeys() {
 }
 
 function returnPublicKey() {
-    var promiseChain = Promise.resolve(getStoredKeys());
+    var promiseChain = Promise.resolve(generateNewKeys());
     return promiseChain.then(function(keys) {
         return keys.public;
     })
