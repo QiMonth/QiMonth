@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Firebase Cloud Messaging Demo - Shareurcodes</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h1 class="text-center"><u>Firebase Cloud Messaging Demo</u></h2>
+            <p>&nbsp;</p>
+            <h2>Instructions</h2>
+            <p>Allow The Push Message Notification Message By The Browser. Then Copy and Paste Id you obtained in text box by visiting same url in 
+            another browser after you close this TAB not this browser. The Push Notification will not work if you are in same Tab of this domain that is why you need to open another browser.
+            <br><br><b>You Can Allow the Push Notification Message Freely Since I am not storing any of Your client ID in this demo APP.</b></p>
+            
+            <p>You Client ID Will Be Listed Below</p>
+            <div class="well" id="msg">Your Client ID : </div>
+            <p>&nbsp;</p>
+            <form action="curl.php" method="POST">
+              <div class="form-group">
+                <label for="cid">Enter The Client ID of Other Browser</label>
+                <input type="test" class="form-control" name="cid" value="">
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">SUBMIT</button>
+            </form>
+        </div>
+    </div>
+    <p>&nbsp;</p>
+    
+</div>
+
+</body>
+</html>
+
+
+<script src="https://www.gstatic.com/firebasejs/4.5.1/firebase.js"></script>
+<script>
+  // Initialize Firebase
+var config = {
+    apiKey: "AIzaSyAKW6Aul80UFW2LZcgcyoh4AaeszH943Z4",
+    authDomain: "qimonth.firebaseapp.com",
+    databaseURL: "https://qimonth.firebaseio.com",
+    projectId: "qimonth",
+    storageBucket: "qimonth.appspot.com",
+    messagingSenderId: "561356343570"
+};
+  firebase.initializeApp(config);
+
+
+
+const messaging = firebase.messaging();
+
+messaging.requestPermission()
+.then(function() {
+  console.log('Notification permission granted.');
+  return messaging.getToken();
+})
+.then(function(token) {
+  console.log(token);
+  $('#msg').html(token);
+})
+.catch(function(err) {
+  console.log('Unable to get permission to notify.', err);
+});
+
+messaging.onMessage(function(payload){
+    console.log('onMessage',payload);
+})
+
+</script>
