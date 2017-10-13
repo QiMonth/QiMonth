@@ -44,7 +44,11 @@
   <script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
 </body>
 </html>
-<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.5.1/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.5.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.5.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.5.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.5.1/firebase-messaging.js"></script>
 <script>
   // Initialize Firebase
   var config = {
@@ -52,7 +56,7 @@
     authDomain: "qimonth.firebaseapp.com",
     databaseURL: "https://qimonth.firebaseio.com",
     projectId: "qimonth",
-    storageBucket: "",
+    storageBucket: "qimonth.appspot.com",
     messagingSenderId: "561356343570"
   };
   firebase.initializeApp(config);
