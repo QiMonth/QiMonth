@@ -18,3 +18,5 @@ messaging.setBackgroundMessageHandler(payload => {
     console.log('[worker] Received push notification: ', payload);
     return self.registration.showNotification(payload.title, payload);
 });
+
+ 
