@@ -44,35 +44,31 @@
 <script src="https://www.gstatic.com/firebasejs/4.5.1/firebase.js"></script>
 <script>
   // Initialize Firebase
+
 var config = {
-    apiKey: "AIzaSyAKW6Aul80UFW2LZcgcyoh4AaeszH943Z4",
-    authDomain: "qimonth.firebaseapp.com",
-    databaseURL: "https://qimonth.firebaseio.com",
-    projectId: "qimonth",
-    storageBucket: "qimonth.appspot.com",
-    messagingSenderId: "561356343570"
+  apiKey: "AIzaSyDHZTrl00SP05ao8jsj1E80gFV2LC2x-fQ",
+  authDomain: "gcall-4a0f8.firebaseapp.com",
+  databaseURL: "https://gcall-4a0f8.firebaseio.com",
+  projectId: "gcall-4a0f8",
+  storageBucket: "gcall-4a0f8.appspot.com",
+  messagingSenderId: "851484560417"
 };
-  firebase.initializeApp(config);
+firebase.initializeApp(config);
 
+var messaging = firebase.messaging();
 
-
-const messaging = firebase.messaging();
-
-messaging.requestPermission()
-.then(function() {
+messaging.requestPermission().then(function () {
   console.log('Notification permission granted.');
   return messaging.getToken();
-})
-.then(function(token) {
+}).then(function (token) {
   console.log(token);
   $('#msg').html(token);
-})
-.catch(function(err) {
+})["catch"](function (err) {
   console.log('Unable to get permission to notify.', err);
 });
 
-messaging.onMessage(function(payload){
-    console.log('onMessage',payload);
-})
+messaging.onMessage(function (payload) {
+  console.log('onMessage', payload);
+});
 
 </script>
