@@ -42,33 +42,4 @@
 
 
 <script src="https://www.gstatic.com/firebasejs/4.5.1/firebase.js"></script>
-<script>
-  // Initialize Firebase
 
-var config = {
-  apiKey: "AIzaSyDHZTrl00SP05ao8jsj1E80gFV2LC2x-fQ",
-  authDomain: "gcall-4a0f8.firebaseapp.com",
-  databaseURL: "https://gcall-4a0f8.firebaseio.com",
-  projectId: "gcall-4a0f8",
-  storageBucket: "gcall-4a0f8.appspot.com",
-  messagingSenderId: "851484560417"
-};
-firebase.initializeApp(config);
-
-var messaging = firebase.messaging();
-
-messaging.requestPermission().then(function () {
-  console.log('Notification permission granted.');
-  return messaging.getToken();
-}).then(function (token) {
-  console.log(token);
-  $('#msg').html(token);
-})["catch"](function (err) {
-  console.log('Unable to get permission to notify.', err);
-});
-
-messaging.onMessage(function (payload) {
-  console.log('onMessage', payload);
-});
-
-</script>
