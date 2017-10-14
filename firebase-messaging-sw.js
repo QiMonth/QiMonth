@@ -12,11 +12,16 @@ var config = {
 
 firebase.initializeApp(config);
 
-const messaging = firebase.messaging();
+var messaging = firebase.messaging();
 
-messaging.setBackgroundMessageHandler(payload => {
-    console.log('[worker] Received push notification: ', payload);
-    return self.registration.showNotification(payload.title, payload);
+// 接收到通知并展示
+messaging.setBackgroundMessageHandler(function(payload) {
+    console.log('[firebase-messaging-sw.js] Received background message ', payload);
+    // Customize notification here
+    var notificationTitle = '亲！你有新消息';
+    var notificationOptions = {
+        body: 'Background Message body.',
+        icon: './images/icon.png'
+    }; 
+    return self.registration.showNotification(notificationTitle, notificationOptions);
 });
-
- 
