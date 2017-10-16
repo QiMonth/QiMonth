@@ -52,17 +52,13 @@
     var messaging = firebase.messaging();
 
     // 申请接收通知的权限
-    messaging.requestPermission().then(function() {
-        console.log('Notification permission granted.');
+    messaging.requestPermission().then(function() { 
         messaging.getToken()
             .then(function(currentToken) {
                 if (currentToken) {
                     sendTokenToServer(currentToken); 
                     $('#msg').html(currentToken); 
-                } else {
-                    // Show permission request.
-                    console.log('No Instance ID token available. Request permission to generate one.');
-                    // Show permission UI. 
+                } else { 
                     setTokenSentToServer(false);
                 }
             })
@@ -81,20 +77,13 @@
     });
 
     // [START 监控令牌刷新]
-    messaging.onTokenRefresh(function() {
-        console.log('监控令牌刷新');
+    messaging.onTokenRefresh(function() { 
         // 检索当前的注册令牌
         messaging.getToken()
             .then(function(refreshedToken) {
-                console.log('获取token', refreshedToken);
-                // Indicate that the new Instance ID token has not yet been sent to the
-                // app server.
-                setTokenSentToServer(false);
-                // Send Instance ID token to app server.
-                sendTokenToServer(refreshedToken); 
-                // [START_EXCLUDE]
-                // Display new Instance ID token and clear UI of all previous messages. 
-                // [END_EXCLUDE]
+                console.log('获取token', refreshedToken); 
+                setTokenSentToServer(false); 
+                sendTokenToServer(refreshedToken);  
             })
             .catch(function(err) {
                 console.log('Unable to retrieve refreshed token ', err); 
@@ -106,27 +95,23 @@
     // 把token发送给服务器;
     function sendTokenToServer(currentToken) {
         if (!isTokenSentToServer()) {
-            console.log('Sending token to server...');
-            // TODO(developer): Send the current token to your server.
+            console.log('Sending token to server...'); 
             setTokenSentToServer(true);
             $('#newmsg').html(currentToken);
         } else {
-            console.log('Token already sent to server so won\'t send it again ' +
-                'unless it changes');
-        }
-
+            console.log('你的token已经发送到服务器，不需要再次发送了');
+        } 
     }
 
+    // 检查token是否发送到服务器
     function isTokenSentToServer() {
         return window.localStorage.getItem('sentToServer') == 1;
     }
 
-    // 检查是否本地存储token;
+    // 设置token是否发送到服务器;
     function setTokenSentToServer(sent) {
         window.localStorage.setItem('sentToServer', sent ? 1 : 0);
     }
-
-
     </script>
 </body>
 </html>
