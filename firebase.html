@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="manifest" href="/manifest.json">
 </head>
 
 <body>
@@ -23,6 +24,7 @@
                 
                 <p>You Client ID Will Be Listed Below</p>
                 <div class="well" id="msg">Your Client ID : </div>
+                <div class="well" id="newmsg">New ToKen : </div>
                 <p>&nbsp;</p>
                 <form action="curl.php" method="POST">
                   <div class="form-group">
@@ -64,6 +66,52 @@
     messaging.onMessage(function(payload) {
         console.log('onMessage', payload);
     });
+
+    // [START 监控令牌刷新]
+    messaging.onTokenRefresh(function() {
+        // 检索当前的注册令牌
+        messaging.getToken()
+            .then(function(refreshedToken) {
+                console.log('获取token', refreshedToken);
+                // Indicate that the new Instance ID token has not yet been sent to the
+                // app server.
+                setTokenSentToServer(false);
+                // Send Instance ID token to app server.
+                sendTokenToServer(refreshedToken);
+                $('#newmsg').html(refreshedToken);
+                // [START_EXCLUDE]
+                // Display new Instance ID token and clear UI of all previous messages. 
+                // [END_EXCLUDE]
+            })
+            .catch(function(err) {
+                console.log('Unable to retrieve refreshed token ', err); 
+            });
+    });
+    // [END refresh_token]
+
+    // 把token发送给服务器;
+    function sendTokenToServer(currentToken) {
+        if (!isTokenSentToServer()) {
+            console.log('Sending token to server...');
+            // TODO(developer): Send the current token to your server.
+            setTokenSentToServer(true);
+        } else {
+            console.log('Token already sent to server so won\'t send it again ' +
+                'unless it changes');
+        }
+
+    }
+
+    function isTokenSentToServer() {
+        return window.localStorage.getItem('sentToServer') == 1;
+    }
+
+    // 检查是否本地存储token;
+    function setTokenSentToServer(sent) {
+        window.localStorage.setItem('sentToServer', sent ? 1 : 0);
+    }
+
+
     </script>
 </body>
 </html>
