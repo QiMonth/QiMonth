@@ -70,6 +70,8 @@
                 console.log('An error occurred while retrieving token. ', err); 
                 setTokenSentToServer(false);
             }); 
+    }).then(function(token){
+        console.log('执行回调', token);
     })["catch"](function(err) {
         console.log('Unable to get permission to notify.', err);
         setTokenSentToServer(false);
@@ -98,6 +100,7 @@
             })
             .catch(function(err) {
                 console.log('Unable to retrieve refreshed token ', err); 
+                setTokenSentToServer(false);
             });
     });
     // [END refresh_token]
