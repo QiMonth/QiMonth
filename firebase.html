@@ -69,6 +69,7 @@
 
     // [START 监控令牌刷新]
     messaging.onTokenRefresh(function() {
+        console.log('监控令牌刷新');
         // 检索当前的注册令牌
         messaging.getToken()
             .then(function(refreshedToken) {
