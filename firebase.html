@@ -75,6 +75,7 @@
         $('#msg').html(token);
     })["catch"](function(err) {
         console.log('Unable to get permission to notify.', err);
+        setTokenSentToServer(false);
     });
 
     // 接收数据
