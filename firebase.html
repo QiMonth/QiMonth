@@ -69,6 +69,7 @@
                 console.log('An error occurred while retrieving token. ', err); 
                 setTokenSentToServer(false);
             });
+        return messaging.getToken();
     }).then(function(token) {
         console.log(token);
         $('#msg').html(token);
