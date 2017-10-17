@@ -18,10 +18,19 @@ var messaging = firebase.messaging();
 messaging.setBackgroundMessageHandler(function(payload) {
     console.log('[firebase-messaging-sw.js] Received background message ', payload);
     // Customize notification here
-    var notificationTitle = '亲！你有新消息';
-    var notificationOptions = {
-        body: 'Background Message body.',
-        icon: './images/icon.png'
-    }; 
-    return self.registration.showNotification(notificationTitle, notificationOptions);
+    var data = notificationDataProcessing(payload);
+    return self.registration.showNotification(data.title, data.options);
 });
+
+// 数据处理;
+function notificationDataProcessing(data){
+    var notifi = {
+        title: '亲！你有新消息',
+        options: {
+            body: 'Background Message body.',
+            icon: './images/icon.png',
+            tag: 'GcallOfflineNotification'
+        }
+    }   
+    return notifi;
+}
