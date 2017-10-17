@@ -81,7 +81,7 @@
         console.log('Unable to get permission to notify.', err);
         setTokenSentToServer(false);
     });
-    console.log(messaging, 'messaging', messaging.d.scope)
+    console.log(messaging, 'messaging', messaging.d)
 
     // 接收数据
     messaging.onMessage(function(payload) {
