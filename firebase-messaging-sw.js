@@ -36,7 +36,7 @@ function notificationDataProcessing(res) {
     var msgType = res.data.type,
         msgData = null;
     msgData = res.data.data;
-    if (msgData && typeof msgData == string) {
+    if (msgData && typeof msgData == 'string') {
         msgData = $.parseJSON(msgData);
     }
     switch (msgType) {
@@ -63,7 +63,7 @@ function notificationDataProcessing(res) {
 
 // 展示际信(IM)消息的具体处理;
 function showImMsgStyle(msgData){
-    if(typeof msgData != object){
+    if(typeof msgData != 'object'){
         return;
     }
     var resultIm = {};
@@ -105,7 +105,7 @@ function showImMsgStyle(msgData){
 
 // 展示际话(Talk)消息的具体处理;
 function showTalkMsgStyle(msgData){
-    if(typeof msgData != object){
+    if(typeof msgData != 'object'){
         return;
     }
     var resultIm = {}; 
