@@ -13,6 +13,14 @@ var config = {
 firebase.initializeApp(config);
 
 var messaging = firebase.messaging();
+ 
+self.addEventListener('install', function(event) {
+  console.log('Service Worker installing.', event);
+});
+
+self.addEventListener('activate', function(event) {
+  console.log('Service Worker activating.', event);  
+});
 
 self.addEventListener('fetch', function(event) {
     console.log(event, 'event')
@@ -27,14 +35,6 @@ self.addEventListener('fetch', function(event) {
             return fetch(event.request);
         })
     );
-});
-
-self.addEventListener('install', function(event) {
-  console.log('Service Worker installing.', event);
-});
-
-self.addEventListener('activate', function(event) {
-  console.log('Service Worker activating.', event);  
 });
 
 // 接收到通知并展示
