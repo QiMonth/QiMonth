@@ -29,6 +29,13 @@ self.addEventListener('fetch', function(event) {
     );
 });
 
+self.addEventListener('install', function(event) {
+  console.log('Service Worker installing.', event);
+});
+
+self.addEventListener('activate', function(event) {
+  console.log('Service Worker activating.', event);  
+});
 
 // 接收到通知并展示
 messaging.setBackgroundMessageHandler(function(payload) {
