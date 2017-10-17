@@ -81,7 +81,7 @@
         console.log('Unable to get permission to notify.', err);
         setTokenSentToServer(false);
     });
-    console.log(messaging, 'messaging', t.d)
+    console.log(messaging, 'messaging', firebase.messaging())
 
     // 接收数据
     messaging.onMessage(function(payload) {
