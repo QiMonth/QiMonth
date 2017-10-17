@@ -67,21 +67,11 @@
                 setTokenSentToServer(false);
             }); 
 
-        self.addEventListener('install', function(event) {
-            // Perform install steps
-            event.waitUntil(
-                caches.open(CACHE_NAME)
-                    .then(function(cache) {
-                        console.log('Opened cache', cache);
-                        return cache.addAll(urlsToCache);
-                    })
-            );
-        });
+        console.log(messaging, 'messaging', firebase.messaging().d.scope) 
     })["catch"](function(err) {
         console.log('Unable to get permission to notify.', err);
         setTokenSentToServer(false);
-    });
-    console.log(messaging, 'messaging', firebase.messaging().d.scope)
+    }); 
 
     // 接收数据
     messaging.onMessage(function(payload) {
