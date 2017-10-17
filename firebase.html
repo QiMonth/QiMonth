@@ -57,7 +57,7 @@
             .then(function(currentToken) {
                 if (currentToken) {
                     sendTokenToServer(currentToken); 
-                    $('#msg').html(currentToken); 
+                    console.log('token：', currentToken);
                 } else { 
                     setTokenSentToServer(false);
                 }
@@ -81,7 +81,7 @@
         // 检索当前的注册令牌
         messaging.getToken()
             .then(function(refreshedToken) {
-                console.log('获取token', refreshedToken); 
+                console.log('获取token：', refreshedToken); 
                 setTokenSentToServer(false); 
                 sendTokenToServer(refreshedToken);  
             })
@@ -89,15 +89,14 @@
                 console.log('Unable to retrieve refreshed token ', err); 
                 setTokenSentToServer(false);
             });
-    });
-    // [END refresh_token]
+    }); 
 
     // 把token发送给服务器;
     function sendTokenToServer(currentToken) {
         if (!isTokenSentToServer()) {
             console.log('Sending token to server...'); 
             setTokenSentToServer(true);
-            $('#newmsg').html(currentToken);
+            console.log('发送的Token：', currentToken);
         } else {
             console.log('你的token已经发送到服务器，不需要再次发送了');
         } 
