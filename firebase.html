@@ -72,7 +72,7 @@
     }); 
 
     // 接收数据
-    messaging.onMessage(function(payload) {
+    messaging.onMessage(function(payload, event, t) {
         console.log('onMessage', payload);
     });
 
