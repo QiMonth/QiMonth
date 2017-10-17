@@ -53,7 +53,7 @@ function notificationDataProcessing(res) {
         title: '际客 - 国搜际客',
         options: {
             body: msgData.body || '默认消息为空!',
-            icon: msgData.icon || './images/icon.png',
+            icon: msgData.icon || './images/userpic.jpg',
             images: 'http://datacenter.devimg.com/group1/M00/0B/DE/wKgAKlfXZ42EJXZaAAAAAAAAAAA076_824x300.jpg?1507787545725',
             tag: 'GcallOfflineNotification'
         }
