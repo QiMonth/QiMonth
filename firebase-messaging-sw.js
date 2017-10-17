@@ -14,6 +14,22 @@ firebase.initializeApp(config);
 
 var messaging = firebase.messaging();
 
+self.addEventListener('fetch', function(event) {
+    console.log(event, 'event')
+    event.respondWith(
+        caches.match(event.request)
+        .then(function(response) {
+            console.log(response, 'response')
+            // Cache hit - return response
+            if (response) {
+                return response;
+            }
+            return fetch(event.request);
+        })
+    );
+});
+
+
 // 接收到通知并展示
 messaging.setBackgroundMessageHandler(function(payload) {
     console.log('[firebase-messaging-sw.js] Received background message ', payload);
@@ -62,20 +78,20 @@ function notificationDataProcessing(res) {
 }
 
 // 展示际信(IM)消息的具体处理;
-function showImMsgStyle(msgData){
-    if(typeof msgData != 'object'){
+function showImMsgStyle(msgData) {
+    if (typeof msgData != 'object') {
         return;
     }
     var resultIm = {};
     resultIm['body'] = '小白猫';
     resultIm['icon'] = '';
     // req:0 正常消息 1 请求消息
-    if( msgData.data.req == 0){
+    if (msgData.data.req == 0) {
         var groupChat = '';
-        if(parseInt(msgData.data.gt) == 2){
+        if (parseInt(msgData.data.gt) == 2) {
             groupChat = '在群聊中';
         }
-        switch(parseInt(msgData.data.ct)){
+        switch (parseInt(msgData.data.ct)) {
             case 1:
                 resultIm['body'] += ':' + '发布的文本内容!';
                 break;
@@ -96,7 +112,7 @@ function showImMsgStyle(msgData){
                 break;
             default:
         }
-        if(parseInt(msgData.data.ht) == 2){
+        if (parseInt(msgData.data.ht) == 2) {
             resultIm['body'] += '撤回了一条消息';
         }
     }
@@ -104,11 +120,11 @@ function showImMsgStyle(msgData){
 }
 
 // 展示际话(Talk)消息的具体处理;
-function showTalkMsgStyle(msgData){
-    if(typeof msgData != 'object'){
+function showTalkMsgStyle(msgData) {
+    if (typeof msgData != 'object') {
         return;
     }
-    var resultIm = {}; 
+    var resultIm = {};
     resultIm['body'] = '小白猫';
     resultIm['icon'] = '';
     return resultIm;
