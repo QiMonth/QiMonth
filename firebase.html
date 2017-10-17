@@ -52,8 +52,7 @@
     var messaging = firebase.messaging();
 
     // 申请接收通知的权限
-    messaging.requestPermission().then(function(permiss) { 
-        console.log(permiss, 'permiss')
+    messaging.requestPermission().then(function() {  
         messaging.getToken()
             .then(function(currentToken) {
                 if (currentToken) {

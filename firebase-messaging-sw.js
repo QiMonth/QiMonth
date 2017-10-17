@@ -18,15 +18,15 @@ var messaging = firebase.messaging();
 messaging.setBackgroundMessageHandler(function(payload) {
     console.log('[firebase-messaging-sw.js] Received background message ', payload);
     // Customize notification here
-    var payload = {
-        collapse_key: "do_not_collapse",
-        data: {
-            data: '{"data":{"clAid":"341184599174222592","clNm":"小白猫","to":"100030025010","fr":"100044425732","clTm":1508203797804},"dataType":"call","id":1508203797804}',
-            type: "2"
-        },
-        from: "851484560417",
-        priority: "high"
-    }
+    // var payload = {
+    //     collapse_key: "do_not_collapse",
+    //     data: {
+    //         data: '{"data":{"clAid":"341184599174222592","clNm":"小白猫","to":"100030025010","fr":"100044425732","clTm":1508203797804},"dataType":"call","id":1508203797804}',
+    //         type: "2"
+    //     },
+    //     from: "851484560417",
+    //     priority: "high"
+    // }
     var data = notificationDataProcessing(payload);
     return self.registration.showNotification(data.title, data.options);
 });
@@ -52,8 +52,8 @@ function notificationDataProcessing(res) {
     var notifi = {
         title: '际客 - 国搜际客',
         options: {
-            body: 'Background Message body.',
-            icon: './images/icon.png',
+            body: msgData.body || '默认消息为空!',
+            icon: msgData.icon || './images/icon.png',
             images: 'http://datacenter.devimg.com/group1/M00/0B/DE/wKgAKlfXZ42EJXZaAAAAAAAAAAA076_824x300.jpg?1507787545725',
             tag: 'GcallOfflineNotification'
         }
@@ -67,6 +67,39 @@ function showImMsgStyle(msgData){
         return;
     }
     var resultIm = {};
+    resultIm['body'] = '小白猫';
+    resultIm['icon'] = '';
+    // req:0 正常消息 1 请求消息
+    if( msgData.data.req == 0){
+        var groupChat = '';
+        if(parseInt(msgData.data.gt) == 2){
+            groupChat = '在群聊中';
+        }
+        switch(parseInt(msgData.data.ct)){
+            case 1:
+                resultIm['body'] += ':' + '发布的文本内容!';
+                break;
+            case 2:
+                resultIm['body'] += ':' + '[表情]';
+                break;
+            case 3:
+                resultIm['body'] += groupChat + '发送了照片';
+                break;
+            case 4:
+                resultIm['body'] += groupChat + '发送了视频';
+                break;
+            case 5:
+                resultIm['body'] += groupChat + '发送了附件';
+                break;
+            case 9:
+                resultIm['body'] += groupChat + '发送了一条语音消息';
+                break;
+            default:
+        }
+        if(parseInt(msgData.data.ht) == 2){
+            resultIm['body'] += '撤回了一条消息';
+        }
+    }
     return resultIm;
 }
 
@@ -76,5 +109,7 @@ function showTalkMsgStyle(msgData){
         return;
     }
     var resultIm = {}; 
+    resultIm['body'] = '小白猫';
+    resultIm['icon'] = '';
     return resultIm;
 }
