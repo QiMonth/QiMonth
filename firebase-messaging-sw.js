@@ -43,15 +43,15 @@ console.log(self.location, 'self.location')
 messaging.setBackgroundMessageHandler(function(payload, event, t) {
     console.log('[firebase-messaging-sw.js] Received background message ', payload, event, t);
     // Customize notification here
-    // var payload = {
-    //     collapse_key: "do_not_collapse",
-    //     data: {
-    //         data: '{"data":{"clAid":"341184599174222592","clNm":"小白猫","to":"100030025010","fr":"100044425732","clTm":1508203797804},"dataType":"call","id":1508203797804}',
-    //         type: "2"
-    //     },
-    //     from: "851484560417",
-    //     priority: "high"
-    // }
+    var payload = {
+        collapse_key: "do_not_collapse",
+        data: {
+            data: '{"data":{"clAid":"341184599174222592","clNm":"小白猫","to":"100030025010","fr":"100044425732","clTm":1508203797804},"dataType":"call","id":1508203797804}',
+            type: "2"
+        },
+        from: "851484560417",
+        priority: "high"
+    }
     var data = notificationDataProcessing(payload);
     return self.registration.showNotification(data.title, data.options);
 });
@@ -61,6 +61,7 @@ function notificationDataProcessing(res) {
     var msgType = res.data.type,
         msgData = null;
     msgData = res.data.data;
+    console.log('Data数据：', msgData)
     if (msgData && typeof msgData == 'string') {
         msgData = $.parseJSON(msgData);
     }
