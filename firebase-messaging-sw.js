@@ -63,7 +63,7 @@ function notificationDataProcessing(res) {
     msgData = res.data.data;
     console.log('Data数据：', msgData)
     if (msgData && typeof msgData == 'string') {
-        msgData = $.parseJSON(msgData);
+        msgData = JSON.parse(msgData);
     }
     switch (msgType) {
         case '1': // 际信消息; 
