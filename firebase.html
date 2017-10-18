@@ -86,7 +86,7 @@
     function sendTokenToServer(currentToken) {
         if (!isTokenSentToServer()) {
             console.log('Sending token to server...'); 
-            setTokenSentToServer(true);
+            setTokenSentToServer(true, currentToken);
             console.log('发送的Token：', currentToken);
         } else {
             console.log('你的token已经发送到服务器，不需要再次发送了');
@@ -95,12 +95,12 @@
 
     // 检查token是否发送到服务器
     function isTokenSentToServer() {
-        return window.localStorage.getItem('sentToServer') == 1;
+        return window.localStorage.getItem('sentToServer');
     }
 
     // 设置token是否发送到服务器;
-    function setTokenSentToServer(sent) {
-        window.localStorage.setItem('sentToServer', sent ? 1 : 0);
+    function setTokenSentToServer(sent, currentToken) {
+        window.localStorage.setItem('sentToServer', sent ? currentToken : 0);
     }
     </script>
 </body>
