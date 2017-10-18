@@ -101,7 +101,13 @@
 
     // 设置token是否发送到服务器;
     function setTokenSentToServer(sent) {
-        window.localStorage.setItem('sentToServer', sent ? 1 : 0);
+        var num = 0;
+        if(sent){
+            num = 1;
+        }else{
+            window.localStorage.removeItem('currentToken');
+        }
+        window.localStorage.setItem('sentToServer', num);
     }
     </script>
 </body>
