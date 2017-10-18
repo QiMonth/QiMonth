@@ -75,7 +75,7 @@ function notificationDataProcessing(res) {
     }
 
     var notifi = {
-        title: '际客 - 国搜际客',
+        title: msgData.title || '际客',
         options: {
             body: msgData.body || '默认消息为空!',
             icon: msgData.icon || './images/userpic.jpg',
@@ -92,6 +92,7 @@ function showImMsgStyle(msgData) {
         return;
     }
     var resultIm = {};
+    resultIm['title'] = '际客 - 国搜际客';
     resultIm['body'] = '小白猫';
     resultIm['icon'] = '';
     // req:0 正常消息 1 请求消息
@@ -133,8 +134,26 @@ function showTalkMsgStyle(msgData) {
     if (typeof msgData != 'object') {
         return;
     }
-    var resultIm = {};
-    resultIm['body'] = '小白猫';
+    var resultIm = {},
+        title = resultIm['title'];
+    title = '';
+    switch(msgData.dataType){
+        case 'call':
+            title = '音频';
+            break;
+        case 'call_v':
+            title = '视频';
+            break;
+        case 'call_e':
+            title = '企业音频';
+            break;
+        case 'call_v_e':
+            title = '企业视频';
+            break;
+        default:
+    } 
+    title += '来电';
+    resultIm['body'] = msgData.data.clNm + '来电, 点击接听。';
     resultIm['icon'] = '';
     return resultIm;
 }
