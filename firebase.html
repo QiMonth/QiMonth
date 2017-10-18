@@ -72,7 +72,8 @@
     }); 
 
     // 接收数据
-    messaging.onMessage(function(payload, event, t) {
+    messaging.onMessage(function(payload) {
+        console.log(self.location, 'self.location')
         console.log('onMessage', payload);
     });
 

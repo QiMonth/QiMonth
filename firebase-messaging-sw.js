@@ -37,10 +37,9 @@ self.addEventListener('fetch', function(event) {
     );
 });
 
-console.log(self.location, 'self.location')
-
 // 接收到通知并展示
-messaging.setBackgroundMessageHandler(function(payload, event, t) {
+messaging.setBackgroundMessageHandler(function(payload) {
+    console.log(self.location, 'self.location')
     console.log('[firebase-messaging-sw.js] Received background message ', payload, event, t);
     // Customize notification here
     // var payload = {
