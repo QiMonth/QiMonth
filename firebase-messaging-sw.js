@@ -1,46 +1,14 @@
 importScripts('https://www.gstatic.com/firebasejs/4.5.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/4.5.1/firebase-messaging.js');
-// Initialize Firebase
-var config = {
-    apiKey: "AIzaSyDHZTrl00SP05ao8jsj1E80gFV2LC2x-fQ",
-    authDomain: "gcall-4a0f8.firebaseapp.com",
-    databaseURL: "https://gcall-4a0f8.firebaseio.com",
-    projectId: "gcall-4a0f8",
-    storageBucket: "gcall-4a0f8.appspot.com",
-    messagingSenderId: "851484560417"
-};
-
-firebase.initializeApp(config);
+importScripts('./scripts/firebaseInit.js');
 
 var messaging = firebase.messaging();
- 
-self.addEventListener('install', function(event) {
-  console.log('Service Worker installing.', event);
-});
-
-self.addEventListener('activate', function(event) {
-  console.log('Service Worker activating.', event);  
-});
-
-self.addEventListener('fetch', function(event) {
-    console.log(event, 'event')
-    event.respondWith(
-        caches.match(event.request)
-        .then(function(response) {
-            console.log(response, 'response')
-            // Cache hit - return response
-            if (response) {
-                return response;
-            }
-            return fetch(event.request);
-        })
-    );
-});
 console.log(self.location, 'self.location')
 
 // 接收到通知并展示
 messaging.setBackgroundMessageHandler(function(payload) {
-    
+    var payload = payload;
+    payload['origin'] = self.location.origin;
     console.log('[firebase-messaging-sw.js] Received background message ', payload);
     // Customize notification here
     // var payload = {
@@ -61,12 +29,12 @@ function notificationDataProcessing(res) {
     var msgType = res.data.type,
         msgData = null;
     msgData = res.data.data;
-    console.log('Data数据：', msgData)
     if (msgData && typeof msgData == 'string') {
         msgData = JSON.parse(msgData);
     }
     switch (msgType) {
         case '1': // 际信消息; 
+            msgData['origin'] = res.origin;
             msgData = showImMsgStyle(msgData);
             break;
         case '2': // 际话消息;
@@ -76,11 +44,10 @@ function notificationDataProcessing(res) {
     }
 
     var notifi = {
-        title: msgData.title || '际客',
+        title: msgData.title || '',
         options: {
-            body: msgData.body || '默认消息为空!',
+            body: msgData.body || '',
             icon: msgData.icon || './images/userpic.jpg',
-            images: 'http://datacenter.devimg.com/group1/M00/0B/DE/wKgAKlfXZ42EJXZaAAAAAAAAAAA076_824x300.jpg?1507787545725',
             tag: 'GcallOfflineNotification'
         }
     }
@@ -92,8 +59,17 @@ function showImMsgStyle(msgData) {
     if (typeof msgData != 'object') {
         return;
     }
-    var resultIm = {};
-    resultIm['title'] = '际客 - 国搜际客';
+    var resultIm = {},
+        origin = msgData.origin,
+        title = resultIm['title'];
+    if (origin.indexOf('chinaso.gcall.com') != -1) {
+        title = '国搜';
+    } else if (origin.indexOf('g.gcall.com') != -1) {
+        title = '院校';
+    } else {
+        title = '';
+    }
+    title += '际客';
     resultIm['body'] = '小白猫';
     resultIm['icon'] = '';
     // req:0 正常消息 1 请求消息
@@ -138,7 +114,7 @@ function showTalkMsgStyle(msgData) {
     var resultIm = {},
         title = resultIm['title'];
     title = '';
-    switch(msgData.dataType){
+    switch (msgData.dataType) {
         case 'call':
             title = '音频';
             break;
@@ -152,7 +128,7 @@ function showTalkMsgStyle(msgData) {
             title = '企业视频';
             break;
         default:
-    } 
+    }
     title += '来电';
     resultIm['body'] = msgData.data.clNm + '来电, 点击接听。';
     resultIm['icon'] = '';
